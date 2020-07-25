@@ -1,0 +1,51 @@
+---
+title       : Visualization with R, plotly and slidify
+subtitle    : A learning exercise...
+author      : sath_ms
+job         : July25,2020
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Introduction
+
+1. A boxplot example
+2. A trellis boxplot example
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+---
+
+## Diamond - Overall Price and Price by Cut
+
+```{r echo=FALSE}
+require(plotly)
+p <- plot_ly(diamonds, y = ~price, color = I("black"), 
+             alpha = 0.1, boxpoints = "suspectedoutliers")
+p1 <- p %>% add_boxplot(x = "Overall")
+p2 <- p %>% add_boxplot(x = ~cut)
+subplot(
+  p1, p2, shareY = TRUE,
+  widths = c(0.2, 0.8), margin = 0
+) %>% hide_legend()
+```
+
+---
+
+## Diamond - Price by cut and clarity
+
+```{r echo=FALSE}
+plot_ly(diamonds, x = ~price, y = ~interaction(clarity, cut)) %>%
+  add_boxplot(color = ~clarity) %>%
+  layout(yaxis = list(title = ""))
+```
+
+---
+
+## Thanks
